@@ -5,7 +5,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:api": "npm run start:dev --workspace=apps/api",
     "dev": "concurrently \"npm run dev:api\""
   },
   "keywords": [],
