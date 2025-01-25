@@ -7,6 +7,8 @@ import {InversifyExpressServer} from "inversify-express-utils";
 import logger from "./logger";
 import {container} from "./di-container";
 
+const PORT = 3000;
+
 const morganFormat = ":method :url :status :response-time ms";
 
 export class Application {
@@ -36,8 +38,8 @@ export class Application {
 
     const app = server.build();
 
-    app.listen(3000, () => {
-      logger.info('Server is running on port 3000');
+    app.listen(PORT, () => {
+      logger.info(`server running on port ${PORT}`);
     });
   }
 }
