@@ -1,20 +1,29 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "nodemon bootstrap.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "inversify": "^6.2.1",
+    "inversify-express-utils": "^6.4.10",
+    "morgan": "^1.10.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "^0.2.2",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/inversify": "^2.0.32",
+    "@types/morgan": "^1.9.9",
     "@types/node": "^22.10.10",
+    "@types/winston": "^2.4.4",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
