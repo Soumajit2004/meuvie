@@ -1,2 +1,9 @@
+
+# Node Modules
 node_modules
 
+# Temporary Files
+data
+
+# IDE
+.idea
