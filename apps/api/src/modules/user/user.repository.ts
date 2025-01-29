@@ -2,6 +2,7 @@ import { IUserRepository } from './interfaces/user-repository.interface';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
 
 export class UserRepository extends Repository<User> implements IUserRepository {
 
@@ -11,11 +12,17 @@ export class UserRepository extends Repository<User> implements IUserRepository 
     super(userRepository.target, userRepository.manager, userRepository.queryRunner);
   }
 
-  async createUser(): Promise<User> {
-    return new User();
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const { username } = createUserDto;
+
+    const user = this.create({
+      username: username,
+    });
+
+    return this.save(user);
   }
 
-  async findUserById(userId: string): Promise<User | null> {
-    return this.findOne({ where: { id: userId } });
+  async findUserByUsername(userName: string): Promise<User | null> {
+    return this.findOne({ where: { username: userName } });
   }
 }

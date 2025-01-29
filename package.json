@@ -1,6 +1,7 @@
 {
   "name": "meuvie",
   "version": "1.0.0",
+  "type": "module",
   "workspaces": [
     "apps/*"
   ],
@@ -14,9 +15,5 @@
   "description": "",
   "devDependencies": {
     "concurrently": "^9.1.2"
-  },
-  "dependencies": {
-    "@oslojs/crypto": "^1.0.1",
-    "@oslojs/encoding": "^1.1.0"
   }
 }

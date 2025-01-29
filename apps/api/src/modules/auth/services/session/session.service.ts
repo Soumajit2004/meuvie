@@ -1,34 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { encodeBase32LowerCaseNoPadding, encodeHexLowerCase } from '@oslojs/encoding';
-
-import { UserSession } from '../user-session.entity';
-import { User } from '../../user/user.entity';
-import { UserSessionRepository } from '../user-session.repository';
-import { sha256 } from '@oslojs/crypto/dist/sha2';
-import { UserRepository } from '../../user/user.repository';
-
-export type SessionValidationResult =
-  | { session: UserSession; user: User }
-  | { session: null; user: null };
-
+import { UserSessionRepository } from '../../user-session.repository';
+import { UserRepository } from '../../../user/user.repository';
+import { UserSession } from '../../user-session.entity';
+import { SessionValidationResult } from '../../session-validation-result.type';
+import * as nanoid from 'nanoid';
 
 @Injectable()
 export class SessionService {
-
-  constructor(private readonly userSessionRepository: UserSessionRepository, private readonly userRepository: UserRepository) {
+  constructor(private readonly userSessionRepository: UserSessionRepository,
+              private readonly userRepository: UserRepository) {
   }
 
   generateSessionToken(): string {
-    const bytes = new Uint8Array(20);
-    crypto.getRandomValues(bytes);
-
-    return encodeBase32LowerCaseNoPadding(bytes);
+    return nanoid.nanoid(16);
   }
 
-  async createSession(token: string, userId: string): Promise<UserSession> {
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+  async createSession(token: string, userName: string): Promise<UserSession> {
+    const sessionId = token;
 
-    const user = await this.userRepository.findUserById(userId);
+    const user = await this.userRepository.findUserByUsername(userName);
 
     if (user === null) {
       throw new NotFoundException('User not found');
@@ -42,7 +32,7 @@ export class SessionService {
   }
 
   async validateSessionToken(token: string): Promise<SessionValidationResult> {
-    const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
+    const sessionId = token;
 
     const userSession = await this.userSessionRepository.findUserSessionById(sessionId);
 
@@ -66,5 +56,4 @@ export class SessionService {
   async invalidateSession(sessionId: string): Promise<void> {
     await this.userSessionRepository.deleteSession(sessionId);
   }
-
 }
