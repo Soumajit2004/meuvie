@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class UserSession {
@@ -6,8 +7,9 @@ export class UserSession {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  userId: string;
+  @OneToOne(() => User)
+  @JoinColumn()
+  user: User;
 
   @Column()
   expiresAt: Date;

@@ -7,6 +7,7 @@ import { AuthController } from './auth.controller';
 import { UserSession } from './user-session.entity';
 import { UserSessionRepository } from './user-session.repository';
 import { SessionService } from './services/session.service';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SessionService } from './services/session.service';
     PassportModule.register({
       session: true,
     }),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, SessionService, UserSessionRepository],
