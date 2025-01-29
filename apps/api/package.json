@@ -34,12 +34,12 @@
     "express-session": "^1.18.1",
     "joi": "^17.13.3",
     "mysql2": "^3.12.0",
+    "nanoid": "^3.3.4",
     "passport": "^0.7.0",
-    "passport-jwt": "^4.0.1",
+    "passport-cookie": "^1.0.9",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.20",
-    "nanoid": "^3.3.4"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -50,8 +50,6 @@
     "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
-    "@types/passport-jwt": "^4.0.1",
-    "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",

@@ -27,7 +27,7 @@ export class UserSessionRepository extends Repository<UserSession> {
   }
 
   async findUserSessionById(sessionId: string): Promise<UserSession | null> {
-    return this.findOne({ where: { id: sessionId } });
+    return this.findOne({ where: { id: sessionId }, relations: ['user'] });
   }
 
   async updateSession(session: UserSession): Promise<UserSession> {

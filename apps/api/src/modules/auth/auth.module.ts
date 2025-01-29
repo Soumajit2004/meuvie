@@ -8,17 +8,18 @@ import { UserSession } from './user-session.entity';
 import { UserSessionRepository } from './user-session.repository';
 import { UserModule } from '../user/user.module';
 import { SessionService } from './services/session/session.service';
+import { CookieStrategy } from './strategies/cookie.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserSession]),
     PassportModule.register({
-      session: true,
+      defaultStrategy: 'cookie',
     }),
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, SessionService, UserSessionRepository],
+  providers: [AuthService, SessionService, UserSessionRepository, CookieStrategy],
 })
 export class AuthModule {
 }
