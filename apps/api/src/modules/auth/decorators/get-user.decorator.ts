@@ -1,8 +1,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { User } from '../../user/user.entity';
+import { SessionValidationResult } from '../session-validation-result.type';
 
-export const GetUser = createParamDecorator(
-  (_data, ctx: ExecutionContext): User => {
+export const GetSession = createParamDecorator(
+  (_data, ctx: ExecutionContext): SessionValidationResult => {
     const req = ctx.switchToHttp().getRequest();
 
     return req.user;

@@ -1,28 +1,31 @@
-import { IUserRepository } from './interfaces/user-repository.interface';
-import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
+import { IUserRepository } from './interfaces/user-repository.interface';
+import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 
-export class UserRepository extends Repository<User> implements IUserRepository {
+
+export class UserRepository implements IUserRepository {
 
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {
-    super(userRepository.target, userRepository.manager, userRepository.queryRunner);
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const { username } = createUserDto;
+    const { username, password, fullName } = createUserDto;
 
-    const user = this.create({
+    const user = this.userRepository.create({
       username: username,
+      password: password,
+      fullName: fullName,
     });
 
-    return this.save(user);
+    return this.userRepository.save(user);
   }
 
   async findUserByUsername(userName: string): Promise<User | null> {
-    return this.findOne({ where: { username: userName } });
+    return this.userRepository.findOne({ where: { username: userName } });
   }
 }
