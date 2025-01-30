@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Request, Response } from 'express';
 
 import { AuthService } from './services/auth/auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
@@ -12,6 +12,11 @@ import { SessionValidationResult } from './session-validation-result.type';
 export class AuthController {
 
   constructor(private readonly authService: AuthService) {
+  }
+
+  @Get('csrf')
+  csrfToken(@Req() request: Request): { csrfToken: string } {
+    return { csrfToken: request.csrfToken() };
   }
 
   @Post('signup')

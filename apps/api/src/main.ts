@@ -5,12 +5,16 @@ import * as session from 'express-session';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './transform.interseptor';
+import csrf from './csrf';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.use(cookieParser());
+  const {
+    doubleCsrfProtection,
+  } = csrf;
+
   app.enableCors({
     origin: ['http://localhost:5173'],
     credentials: true,
@@ -18,11 +22,14 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: 'my-secret',
+      secret: 'secrettokenforuser',
       resave: false,
       saveUninitialized: false,
     }),
   );
+  app.use(cookieParser());
+
+  app.use(doubleCsrfProtection);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new TransformInterceptor());
