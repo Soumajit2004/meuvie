@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import * as crypto from 'node:crypto';
+
 import { UserSessionRepository } from '../../user-session.repository';
 import { UserRepository } from '../../../user/user.repository';
 import { UserSession } from '../../user-session.entity';
 import { SessionValidationResult } from '../../session-validation-result.type';
-import * as nanoid from 'nanoid';
+
 
 @Injectable()
 export class SessionService {
@@ -12,7 +14,7 @@ export class SessionService {
   }
 
   generateSessionToken(): string {
-    return nanoid.nanoid(16);
+    return crypto.randomUUID();
   }
 
   async createSession(token: string, userName: string): Promise<UserSession> {

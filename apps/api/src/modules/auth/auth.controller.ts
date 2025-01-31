@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 import { AuthService } from './services/auth/auth.service';
@@ -31,7 +31,7 @@ export class AuthController {
     response.cookie('session', token, { httpOnly: true, sameSite: 'lax', expires: expiresAt, path: '/' });
   }
 
-  @Post('signout')
+  @Delete('signout')
   @UseGuards(CookieGuard)
   async signout(@GetSession() session: SessionValidationResult, @Res({ passthrough: true }) response: Response): Promise<void> {
     response.clearCookie('session', { path: '/' });
