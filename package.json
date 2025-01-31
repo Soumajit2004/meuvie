@@ -1,13 +1,13 @@
 {
   "name": "meuvie",
   "version": "1.0.0",
-  "type": "module",
   "workspaces": [
     "apps/*"
   ],
   "scripts": {
     "dev:api": "npm run start:dev --workspace=apps/api",
-    "dev": "concurrently \"npm run dev:api\""
+    "dev:web": "npm run dev --workspace=apps/client",
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:web\""
   },
   "keywords": [],
   "author": "",
