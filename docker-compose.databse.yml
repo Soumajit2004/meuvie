@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'meuvie'
+      MYSQL_USER: 'server'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'strong-password'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - database:/var/lib/mysql
+volumes:
+  database:

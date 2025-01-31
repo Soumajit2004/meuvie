@@ -1,18 +1,15 @@
 {
   "name": "meuvie",
   "version": "1.0.0",
-  "workspaces": [
-    "apps/*"
-  ],
-  "scripts": {
-    "dev:api": "npm run start:dev --workspace=apps/api",
-    "dev": "concurrently \"npm run dev:api\""
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "concurrently": "^9.1.2"
-  }
+    "@nestjs/schematics": "^10.0.1",
+    "@nx/nest": "20.4.0",
+    "concurrently": "^9.1.2",
+    "nx": "20.4.0"
+  },
+  "dependencies": {}
 }

@@ -1,2 +1,14 @@
+
+# Node Modules
 node_modules
 
+# Temporary Files
+data
+
+# IDE
+.idea
+
+
+
+.nx/cache
+.nx/workspace-data
