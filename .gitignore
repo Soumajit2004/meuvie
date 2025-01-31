@@ -7,3 +7,8 @@ data
 
 # IDE
 .idea
+
+
+
+.nx/cache
+.nx/workspace-data

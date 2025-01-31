@@ -1,8 +1,8 @@
 {
-  "name": "api",
+  "name": "@apps/api",
   "version": "0.0.1",
   "description": "",
-  "author": "",
+  "author": "soumajit ghosh",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
