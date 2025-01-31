@@ -16,6 +16,7 @@ export class AuthController {
 
   @Get('csrf')
   csrfToken(@Req() request: Request): { csrfToken: string } {
+    // @ts-ignore
     return { csrfToken: request.csrfToken() };
   }
 
