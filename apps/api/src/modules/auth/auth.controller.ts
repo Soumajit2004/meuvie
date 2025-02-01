@@ -9,17 +9,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-
-import { AuthService } from './services/auth/auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { SignInUserDto } from './dto/request/signin-user.dto';
 import { CookieGuard } from './guards/cookie.guard';
-import { GetSession } from './decorators/get-user.decorator';
+import { GetSession } from './decorators/get-session.decorator';
 import { SessionValidationResult } from './types/session-validation-result.type';
+import { IAuthService } from './interfaces/services/auth.service.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: IAuthService) {}
 
   @Get('csrf')
   csrfToken(@Req() request: Request): { csrfToken: string } {
