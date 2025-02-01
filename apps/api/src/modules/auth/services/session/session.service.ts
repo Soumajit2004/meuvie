@@ -1,17 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'node:crypto';
-
-import { UserSessionRepository } from '../../user-session.repository';
-import { UserRepository } from '../../../user/user.repository';
 import { UserSession } from '../../user-session.entity';
-import { SessionValidationResult } from '../../session-validation-result.type';
-
+import { SessionValidationResult } from '../../types/session-validation-result.type';
+import { IUserSessionRepository } from '../../interfaces/repositories/user-session.repository.interface';
+import { ISessionService } from '../../interfaces/services/session.service.interface';
+import { IUserRepository } from '../../../user/interfaces/user-repository.interface';
 
 @Injectable()
-export class SessionService {
-  constructor(private readonly userSessionRepository: UserSessionRepository,
-              private readonly userRepository: UserRepository) {
-  }
+export class SessionService implements ISessionService {
+  constructor(
+    private readonly userSessionRepository: IUserSessionRepository,
+    private readonly userRepository: IUserRepository,
+  ) {}
 
   generateSessionToken(): string {
     return crypto.randomUUID();
@@ -36,7 +36,8 @@ export class SessionService {
   async validateSessionToken(token: string): Promise<SessionValidationResult> {
     const sessionId = token;
 
-    const userSession = await this.userSessionRepository.findUserSessionById(sessionId);
+    const userSession =
+      await this.userSessionRepository.findUserSessionById(sessionId);
 
     if (userSession === null) {
       return { session: null, user: null };
@@ -47,7 +48,10 @@ export class SessionService {
       return { session: null, user: null };
     }
 
-    if (Date.now() >= userSession.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15) {
+    if (
+      Date.now() >=
+      userSession.expiresAt.getTime() - 1000 * 60 * 60 * 24 * 15
+    ) {
       userSession.expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 
       await this.userSessionRepository.updateSession(userSession);
