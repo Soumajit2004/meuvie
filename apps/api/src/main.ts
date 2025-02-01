@@ -4,8 +4,8 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 
 import { AppModule } from './app.module';
-import { TransformInterceptor } from './transform.interseptor';
-import csrf from './csrf';
+import { TransformInterceptor } from './common/interceptors/transform.interseptor';
+import csrf from './utils/csrf';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
