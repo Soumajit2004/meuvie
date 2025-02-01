@@ -2,15 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import * as process from 'process';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interseptor';
-import csrf from './utils/csrf';
+import csrfInstance from './utils/csrf';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const { doubleCsrfProtection } = csrf;
+  const { doubleCsrfProtection } = csrfInstance;
 
   app.enableCors({
     origin: ['http://localhost:5173'],
@@ -19,7 +20,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: 'secrettokenforuser',
+      secret: process.env.SESSION_SECRET ?? 'secret',
       resave: false,
       saveUninitialized: false,
     }),

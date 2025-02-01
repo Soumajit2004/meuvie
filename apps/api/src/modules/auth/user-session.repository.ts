@@ -4,9 +4,10 @@ import { Repository } from 'typeorm';
 
 import { UserSession } from './user-session.entity';
 import { User } from '../user/user.entity';
+import { IUserSessionRepository } from './interfaces/repositories/user-session.repository.interface';
 
 @Injectable()
-export class UserSessionRepository {
+export class UserSessionRepository implements IUserSessionRepository {
   constructor(
     @InjectRepository(UserSession)
     private userSessionRepository: Repository<UserSession>,

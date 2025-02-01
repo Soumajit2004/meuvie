@@ -3,7 +3,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { configValidationSchema } from './common/schema/config.schema';
+import { configValidationSchema } from './common/schemas/config.schema';
 
 @Module({
   imports: [

@@ -1,16 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import * as crypto from 'node:crypto';
-
-import { UserSessionRepository } from '../../user-session.repository';
-import { UserRepository } from '../../../user/user.repository';
 import { UserSession } from '../../user-session.entity';
 import { SessionValidationResult } from '../../types/session-validation-result.type';
+import { IUserSessionRepository } from '../../interfaces/repositories/user-session.repository.interface';
+import { ISessionService } from '../../interfaces/services/session.service.interface';
+import { IUserRepository } from '../../../user/interfaces/user-repository.interface';
 
 @Injectable()
-export class SessionService {
+export class SessionService implements ISessionService {
   constructor(
-    private readonly userSessionRepository: UserSessionRepository,
-    private readonly userRepository: UserRepository,
+    private readonly userSessionRepository: IUserSessionRepository,
+    private readonly userRepository: IUserRepository,
   ) {}
 
   generateSessionToken(): string {

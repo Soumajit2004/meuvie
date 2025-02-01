@@ -8,17 +8,19 @@ import * as bcrypt from 'bcrypt';
 
 import { UserRepository } from '../../../user/user.repository';
 import { CreateUserDto } from '../../../user/dto/create-user.dto';
-import { SessionService } from '../session/session.service';
 import { SignInUserDto } from '../../dto/request/signin-user.dto';
 import { UserSession } from '../../user-session.entity';
+import { IAuthService } from '../../interfaces/services/auth.service.interface';
+import { ISessionService } from '../../interfaces/services/session.service.interface';
+import { IUserRepository } from '../../../user/interfaces/user-repository.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   private readonly logger = new Logger(AuthService.name);
 
   constructor(
-    private readonly userRepository: UserRepository,
-    private readonly sessionService: SessionService,
+    private readonly userRepository: IUserRepository,
+    private readonly sessionService: ISessionService,
   ) {}
 
   async signUp(createUserDto: CreateUserDto): Promise<void> {
