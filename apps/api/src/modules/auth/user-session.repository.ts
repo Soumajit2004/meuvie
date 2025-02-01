@@ -8,12 +8,18 @@ import { User } from '../user/user.entity';
 @Injectable()
 export class UserSessionRepository {
   constructor(
-    @InjectRepository(UserSession) private userSessionRepository: Repository<UserSession>,
-  ) {
-  }
+    @InjectRepository(UserSession)
+    private userSessionRepository: Repository<UserSession>,
+  ) {}
 
-  async createSession(sessionId: string, user: User, expiresAt: Date): Promise<UserSession> {
-    const previousSession = await this.userSessionRepository.findOneBy({ user: user });
+  async createSession(
+    sessionId: string,
+    user: User,
+    expiresAt: Date,
+  ): Promise<UserSession> {
+    const previousSession = await this.userSessionRepository.findOneBy({
+      user: user,
+    });
 
     if (previousSession) {
       await this.deleteSession(previousSession.id);
@@ -33,7 +39,10 @@ export class UserSessionRepository {
   }
 
   async findUserSessionById(sessionId: string): Promise<UserSession | null> {
-    return this.userSessionRepository.findOne({ where: { id: sessionId }, relations: ['user'] });
+    return this.userSessionRepository.findOne({
+      where: { id: sessionId },
+      relations: ['user'],
+    });
   }
 
   async updateSession(session: UserSession): Promise<UserSession> {

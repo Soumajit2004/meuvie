@@ -7,13 +7,10 @@ import { AppModule } from './app.module';
 import { TransformInterceptor } from './transform.interseptor';
 import csrf from './csrf';
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const {
-    doubleCsrfProtection,
-  } = csrf;
+  const { doubleCsrfProtection } = csrf;
 
   app.enableCors({
     origin: ['http://localhost:5173'],

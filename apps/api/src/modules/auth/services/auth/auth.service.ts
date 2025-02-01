@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
@@ -8,11 +9,13 @@ import * as bcrypt from 'bcrypt';
 import { UserRepository } from '../../../user/user.repository';
 import { CreateUserDto } from '../../../user/dto/create-user.dto';
 import { SessionService } from '../session/session.service';
-import { SignInUserDto } from '../../dto/signin-user.dto';
+import { SignInUserDto } from '../../dto/request/signin-user.dto';
 import { UserSession } from '../../user-session.entity';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private readonly userRepository: UserRepository,
     private readonly sessionService: SessionService,
@@ -27,6 +30,8 @@ export class AuthService {
       ...createUserDto,
       password: hashedPassword,
     });
+
+    this.logger.verbose(`user ${createUserDto.username} has been created`);
   }
 
   async signIn(signInUserDto: SignInUserDto): Promise<UserSession> {
@@ -45,10 +50,14 @@ export class AuthService {
     }
 
     const token = this.sessionService.generateSessionToken();
-    return this.sessionService.createSession(token, username);
+    const session = await this.sessionService.createSession(token, username);
+
+    this.logger.verbose(`user ${username} has been signed in`);
+    return session;
   }
 
-  signOut(token: string): Promise<void> {
-    return this.sessionService.invalidateSession(token);
+  async signOut(token: string): Promise<void> {
+    await this.sessionService.invalidateSession(token);
+    this.logger.verbose(`session ${token} has been invalidated`);
   }
 }
