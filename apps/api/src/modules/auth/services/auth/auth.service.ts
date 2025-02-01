@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 import { UserRepository } from '../../../user/user.repository';
@@ -9,16 +13,20 @@ import { UserSession } from '../../user-session.entity';
 
 @Injectable()
 export class AuthService {
-
-  constructor(private readonly userRepository: UserRepository, private readonly sessionService: SessionService) {
-  }
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly sessionService: SessionService,
+  ) {}
 
   async signUp(createUserDto: CreateUserDto): Promise<void> {
     const { password } = createUserDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await this.userRepository.createUser({ ...createUserDto, password: hashedPassword });
+    await this.userRepository.createUser({
+      ...createUserDto,
+      password: hashedPassword,
+    });
   }
 
   async signIn(signInUserDto: SignInUserDto): Promise<UserSession> {

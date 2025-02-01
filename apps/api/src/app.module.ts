@@ -1,9 +1,9 @@
-import {Module} from '@nestjs/common';
-import {AuthModule} from './modules/auth/auth.module';
-import {UserModule} from './modules/user/user.module';
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {configValidationSchema} from "./config.schema";
+import { Module } from '@nestjs/common';
+import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { configValidationSchema } from './config.schema';
 
 @Module({
   imports: [
@@ -28,7 +28,9 @@ import {configValidationSchema} from "./config.schema";
           synchronize: configService.get('STAGE') !== 'prod',
         };
       },
-    }), AuthModule, UserModule],
+    }),
+    AuthModule,
+    UserModule,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

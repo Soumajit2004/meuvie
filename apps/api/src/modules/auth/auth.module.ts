@@ -19,7 +19,11 @@ import { CookieStrategy } from './strategies/cookie.strategy';
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, SessionService, UserSessionRepository, CookieStrategy],
+  providers: [
+    AuthService,
+    SessionService,
+    UserSessionRepository,
+    CookieStrategy,
+  ],
 })
-export class AuthModule {
-}
+export class AuthModule {}
