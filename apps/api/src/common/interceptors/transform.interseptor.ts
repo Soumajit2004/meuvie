@@ -1,8 +1,8 @@
 import {
-  NestInterceptor,
+  CallHandler,
   ExecutionContext,
   Injectable,
-  CallHandler,
+  NestInterceptor,
 } from '@nestjs/common';
 import { instanceToPlain } from 'class-transformer';
 import { map } from 'rxjs/operators';
@@ -16,7 +16,10 @@ export class TransformInterceptor implements NestInterceptor {
    * @param {CallHandler<any>} next - The call handler.
    * @returns {Observable<any>} An observable that emits the transformed data.
    */
-  intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
+  intercept(
+    context: ExecutionContext,
+    next: CallHandler<any>,
+  ): Observable<any> {
     return next.handle().pipe(map((data) => instanceToPlain(data)));
   }
 }

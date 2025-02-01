@@ -4,17 +4,24 @@ import { Repository } from 'typeorm';
 import { IUserRepository } from './interfaces/user-repository.interface';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
-
+@Injectable()
 export class UserRepository implements IUserRepository {
-
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
-  ) {
-  }
+  ) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { username, password, fullName } = createUserDto;
+
+    const duplicateUser = await this.userRepository.findOneBy({
+      username: username,
+    });
+
+    if (duplicateUser) {
+      throw new BadRequestException('username already taken');
+    }
 
     const user = this.userRepository.create({
       username: username,
