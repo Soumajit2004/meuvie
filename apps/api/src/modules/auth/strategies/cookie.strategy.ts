@@ -1,12 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-cookie';
-import { SessionService } from '../services/session/session.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SessionValidationResult } from '../types/session-validation-result.type';
+import { ISessionService } from '../interfaces/services/session.service.interface';
 
 @Injectable()
 export class CookieStrategy extends PassportStrategy(Strategy, 'cookie') {
-  constructor(private readonly sessionService: SessionService) {
+  constructor(private readonly sessionService: ISessionService) {
     super({
       cookieName: 'session',
     });

@@ -1,8 +1,9 @@
 import { doubleCsrf } from 'csrf-csrf';
-import * as process from 'node:process';
+import { ConfigService } from '@nestjs/config';
 
-const csrfInstance = doubleCsrf({
-  getSecret: () => process.env.CSRF_SECRET ?? 'secretbigsecret',
-});
+const csrfInstance = (configService: ConfigService) =>
+  doubleCsrf({
+    getSecret: () => configService.get<string>('CSRF_SECRET'),
+  });
 
 export default csrfInstance;
