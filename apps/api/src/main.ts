@@ -2,16 +2,18 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
-import * as process from 'process';
 
 import { AppModule } from './app.module';
 import { TransformInterceptor } from './common/interceptors/transform.interseptor';
 import csrfInstance from './utils/csrf';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const { doubleCsrfProtection } = csrfInstance;
+  const configService = new ConfigService();
+
+  const { doubleCsrfProtection } = csrfInstance(configService);
 
   app.enableCors({
     origin: ['http://localhost:5173'],
@@ -20,7 +22,7 @@ async function bootstrap() {
 
   app.use(
     session({
-      secret: process.env.SESSION_SECRET ?? 'secret',
+      secret: configService.get<string>('SESSION_SECRET'),
       resave: false,
       saveUninitialized: false,
     }),
@@ -32,7 +34,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(configService.get<number>('PORT'));
 }
 
 bootstrap();
