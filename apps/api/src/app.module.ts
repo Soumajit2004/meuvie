@@ -4,17 +4,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
+import { VideoModule } from './modules/video/video.module';
 
-import { configValidationSchema } from './common/schemas/config.schema';
+import { configModuleOptions } from './config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      ignoreEnvFile: process.env.STAGE === 'prod',
-      envFilePath: [`.env.stage.${process.env.STAGE}`, '.env'],
-      validationSchema: configValidationSchema,
-      expandVariables: true,
-    }),
+    ConfigModule.forRoot(configModuleOptions),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -33,6 +29,7 @@ import { configValidationSchema } from './common/schemas/config.schema';
     }),
     AuthModule,
     UserModule,
+    VideoModule,
   ],
 })
 export class AppModule {}

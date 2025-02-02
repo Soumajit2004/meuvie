@@ -1,0 +1,1 @@
+export * from './configModule.config';
