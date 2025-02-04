@@ -1,20 +1,28 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
-import { MediaService } from './media.service';
+import { AWSMediaService } from './aws-media.service';
 import { IMediaService } from './interfaces/media.service.interface';
 
 import { ImageMedia } from './entites/image-media.entity';
 import { VideoMedia } from './entites/video-media.entity';
 
+import { IVideoMediaRepository } from './interfaces/repositories/video-media.repository.interface';
+import { VideoMediaRepository } from './repositories/video-media.repository';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([ImageMedia, VideoMedia])],
+  imports: [TypeOrmModule.forFeature([ImageMedia, VideoMedia]), ConfigModule],
   providers: [
     {
       provide: IMediaService,
-      useClass: MediaService,
+      useClass: AWSMediaService,
+    },
+    {
+      provide: IVideoMediaRepository,
+      useClass: VideoMediaRepository,
     },
   ],
-  exports: [{ provide: IMediaService, useClass: MediaService }],
+  exports: [{ provide: IMediaService, useClass: AWSMediaService }],
 })
 export class MediaModule {}
