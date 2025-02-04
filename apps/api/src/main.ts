@@ -4,8 +4,8 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 
 import { AppModule } from './app.module';
-import { TransformInterceptor } from './common/interceptors/transform.interseptor';
-import csrfInstance from './utils/auth/csrf';
+import { TransformInterceptor } from './utils/interceptors/transform.interseptor';
+import csrfInstance from './utils/csrf';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {

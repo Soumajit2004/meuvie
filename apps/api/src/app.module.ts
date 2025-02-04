@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { VideoModule } from './modules/video/video.module';
 
 import { configModuleOptions } from './config';
+import { MediaModule } from './libs/media/media.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { configModuleOptions } from './config';
     AuthModule,
     UserModule,
     VideoModule,
+    MediaModule,
   ],
 })
 export class AppModule {}
