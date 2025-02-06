@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 
-import { AWSMediaService } from './aws-media.service';
+import { AWSMediaService } from './services/aws-media.service';
 import { IMediaService } from './interfaces/media.service.interface';
 
 import { ImageMedia } from './entites/image-media.entity';
