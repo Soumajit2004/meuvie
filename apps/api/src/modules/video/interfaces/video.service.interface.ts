@@ -11,4 +11,6 @@ export abstract class IVideoService {
     videoId: string,
     updateVideoMetadata: Partial<VideoMetadataDto>,
   ): Promise<Video>;
+
+  abstract deleteVideo(videoId: string): Promise<void>;
 }

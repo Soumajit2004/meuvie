@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import * as crypto from 'node:crypto';
 
 import { IMediaService } from '../interfaces/media.service.interface';
@@ -42,7 +42,6 @@ export class AWSMediaService implements IMediaService {
    */
   async uploadVideoMedia(file: Express.Multer.File): Promise<VideoMedia> {
     const randomizedFilename = this.randomizeFileName(file.originalname);
-    const uniqueIdentifier = randomizedFilename.split('.')[0];
 
     const uploadResponse = await this.s3Client.send(
       new PutObjectCommand({
@@ -58,8 +57,9 @@ export class AWSMediaService implements IMediaService {
 
     const databaseVideoMedia = await this.videoMediaRepository.createVideoMedia(
       {
-        id: uniqueIdentifier,
-        fileName: randomizedFilename,
+        key: randomizedFilename,
+        originalFilename: file.originalname,
+        mimeType: file.mimetype,
         url: `https://${this.BUCKET_NAME}.s3.amazonaws.com/${randomizedFilename}`,
       },
     );
@@ -67,6 +67,34 @@ export class AWSMediaService implements IMediaService {
     this.logger.verbose('Video media saved to database');
 
     return databaseVideoMedia;
+  }
+
+  /**
+   * Deletes a video file from AWS S3 and removes the metadata from the database.
+   * @param key
+   */
+  async deleteVideoMedia(key: string): Promise<void> {
+    const videoMedia = await this.videoMediaRepository.getVideoMediaById(key);
+
+    if (!videoMedia) {
+      this.logger.error('Video media not found');
+      throw new NotFoundException('Video media not found');
+    }
+
+    const deleteResponse = await this.s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: this.BUCKET_NAME,
+        Key: videoMedia.key,
+      }),
+    );
+
+    this.logger.verbose(
+      `File deleted from S3: ${deleteResponse.$metadata.httpStatusCode}`,
+    );
+
+    await this.videoMediaRepository.deleteVideoMedia(key);
+
+    this.logger.verbose('Video media deleted from database');
   }
 
   /**

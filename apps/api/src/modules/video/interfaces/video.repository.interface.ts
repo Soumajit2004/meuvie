@@ -16,4 +16,6 @@ export abstract class IVideoRepository {
     videoId: string,
     updateVideoMetadata: Partial<VideoMetadataDto>,
   ): Promise<Video>;
+
+  abstract deleteVideo(videoId: string): Promise<void>;
 }

@@ -18,9 +18,19 @@ export class VideoMediaRepository implements IVideoMediaRepository {
   ): Promise<VideoMedia> {
     const video = this.repository.create();
 
-    video.fileName = createVideoMediaDto.fileName;
+    video.key = createVideoMediaDto.key;
+    video.originalFileName = createVideoMediaDto.originalFilename;
     video.url = createVideoMediaDto.url;
+    video.mimeType = createVideoMediaDto.mimeType;
 
     return this.repository.save(video);
+  }
+
+  async getVideoMediaById(key: string): Promise<VideoMedia | null> {
+    return this.repository.findOne({ where: { key } });
+  }
+
+  async deleteVideoMedia(key: string): Promise<void> {
+    await this.repository.delete(key);
   }
 }

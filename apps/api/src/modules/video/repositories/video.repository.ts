@@ -82,4 +82,13 @@ export class VideoRepository implements IVideoRepository {
     video.description = updateVideoMetadata.description || video.description;
     return await this.repository.save(video);
   }
+
+  /**
+   * Deletes a video by its ID.
+   * @param videoId - The ID of the video to delete.
+   * @returns A promise that resolves when the operation is complete.
+   */
+  async deleteVideo(videoId: string): Promise<void> {
+    await this.repository.delete(videoId);
+  }
 }

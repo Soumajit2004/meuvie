@@ -38,9 +38,7 @@ export class VideoService implements IVideoService {
     return this.mediaService
       .uploadVideoMedia(file)
       .then((uploadedVideo) => {
-        this.logger.verbose(
-          `Video with id: ${uploadedVideo.id} uploaded successfully`,
-        );
+        this.logger.verbose(`Video ${uploadedVideo.key} uploaded successfully`);
 
         return this.videoRepository.uploadNewVideo({
           ...createVideoDto,
@@ -77,6 +75,8 @@ export class VideoService implements IVideoService {
       throw new NotFoundException(`Video with id: ${video.id} not found`);
     }
 
+    await this.videoRepository.incrementViews(videoId);
+
     return video;
   }
 
@@ -94,5 +94,37 @@ export class VideoService implements IVideoService {
       videoId,
       updateVideoMetadata,
     );
+  }
+
+  /**
+   * Deletes a video by its ID.
+   * @param videoId - The ID of the video to delete.
+   * @returns A promise that resolves when the operation is complete.
+   */
+  async deleteVideo(videoId: string): Promise<void> {
+    const video = await this.videoRepository.getVideo(videoId);
+
+    if (!video) {
+      throw new NotFoundException(`Video with id: ${videoId} not found`);
+    }
+
+    this.videoRepository
+      .deleteVideo(videoId)
+      .then(() => {
+        return this.mediaService.deleteVideoMedia(video.media.key);
+      })
+      .catch((error) => {
+        this.logger.error(`Error while deleting video: ${error.message}`);
+
+        throw new InternalServerErrorException('Failed to delete video media');
+      })
+      .then(() => {
+        this.logger.verbose(`Video with id: ${videoId} deleted successfully`);
+      })
+      .catch((error) => {
+        this.logger.error(`Error while deleting video: ${error.message}`);
+
+        throw new InternalServerErrorException('Failed to delete video');
+      });
   }
 }

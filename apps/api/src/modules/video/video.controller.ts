@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   HttpStatus,
@@ -59,5 +60,10 @@ export class VideoController {
     @Body() updateVideoMetadata: Partial<VideoMetadataDto>,
   ): Promise<Video> {
     return this.videoService.updateVideoMetadata(videoId, updateVideoMetadata);
+  }
+
+  @Delete('/:id')
+  deleteVideo(@Param('id') videoId: string): Promise<void> {
+    return this.videoService.deleteVideo(videoId);
   }
 }
