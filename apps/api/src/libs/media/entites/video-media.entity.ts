@@ -1,16 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class VideoMedia {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  username: string;
+  @Column()
+  fileName: string;
 
   @Column()
-  password: string;
-
-  @Column()
-  fullName: string;
+  url: string;
 }

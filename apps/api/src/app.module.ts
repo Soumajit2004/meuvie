@@ -7,6 +7,7 @@ import { UserModule } from './modules/user/user.module';
 import { VideoModule } from './modules/video/video.module';
 
 import { configModuleOptions } from './config';
+import { MediaModule } from './libs/media/media.module';
 
 @Module({
   imports: [
@@ -23,13 +24,14 @@ import { configModuleOptions } from './config';
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
           autoLoadEntities: true,
-          synchronize: configService.get('STAGE') !== 'prod',
+          synchronize: configService.get('NODE_ENV') !== 'production',
         };
       },
     }),
     AuthModule,
     UserModule,
     VideoModule,
+    MediaModule,
   ],
 })
 export class AppModule {}

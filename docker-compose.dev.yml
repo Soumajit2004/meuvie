@@ -13,5 +13,12 @@ services:
       - '3306'
     volumes:
       - mysql_database:/var/lib/mysql
+  s3-local:
+    image: scireum/s3-ninja:latest
+    ports:
+      - '9444:9000'
+    volumes:
+      - s3_local_data:/home/sirius/data
 volumes:
   mysql_database:
+  s3_local_data:

@@ -1,6 +1,7 @@
 
 # Node Modules
 node_modules
+pnpm-lock.yaml
 
 # Temporary Files
 data
