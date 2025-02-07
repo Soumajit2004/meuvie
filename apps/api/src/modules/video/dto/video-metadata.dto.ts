@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UploadVideoDto {
+export class VideoMetadataDto {
   @IsString()
   @IsNotEmpty()
   title: string;
