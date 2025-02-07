@@ -10,12 +10,17 @@ import { CreateVideoMediaDto } from '../dto/create-video-media.dto';
 export class VideoMediaRepository implements IVideoMediaRepository {
   constructor(
     @InjectRepository(VideoMedia)
-    private readonly videoMediaRepository: Repository<VideoMedia>,
+    private readonly repository: Repository<VideoMedia>,
   ) {}
 
   createVideoMedia(
     createVideoMediaDto: CreateVideoMediaDto,
   ): Promise<VideoMedia> {
-    return Promise.resolve(undefined);
+    const video = this.repository.create();
+
+    video.fileName = createVideoMediaDto.fileName;
+    video.url = createVideoMediaDto.url;
+
+    return this.repository.save(video);
   }
 }

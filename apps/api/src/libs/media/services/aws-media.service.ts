@@ -36,15 +36,6 @@ export class AWSMediaService implements IMediaService {
   ) {}
 
   /**
-   * Generates a randomized file name.
-   * @param {string} fileName - The original file name.
-   * @returns {string} - The randomized file name.
-   */
-  private randomizeFileName(fileName: string): string {
-    return `${crypto.randomUUID()}.${fileName.split('.').pop()}`;
-  }
-
-  /**
    * Uploads a video file to AWS S3 and saves the metadata to the database.
    * @param {Express.Multer.File} file - The video file to upload.
    * @returns {Promise<VideoMedia>} - The saved video media entity.
@@ -76,5 +67,14 @@ export class AWSMediaService implements IMediaService {
     this.logger.verbose('Video media saved to database');
 
     return databaseVideoMedia;
+  }
+
+  /**
+   * Generates a randomized file name.
+   * @param {string} fileName - The original file name.
+   * @returns {string} - The randomized file name.
+   */
+  private randomizeFileName(fileName: string): string {
+    return `${crypto.randomUUID()}.${fileName.split('.').pop()}`;
   }
 }

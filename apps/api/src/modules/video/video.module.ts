@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { MediaModule } from '../../libs/media/media.module';
-import { VideoController } from './video.controller';
-import { VideoService } from './video.service';
-import { Video } from './entites/video.entity';
-import { VideoRepository } from './repositories/video.repository';
-import { IVideoRepository } from './interfaces/video.repository.interface';
-import { IVideoService } from './interfaces/video.service.interface';
+import { MediaModule } from 'src/libs/media/media.module';
+import { VideoService } from 'src/modules/video/service/video.service';
+import { Video } from 'src/modules/video/entites/video.entity';
+import { IVideoService } from 'src/modules/video/interfaces/video.service.interface';
+import { IVideoRepository } from 'src/modules/video/interfaces/video.repository.interface';
+import { VideoRepository } from 'src/modules/video/repositories/video.repository';
+import { VideoController } from 'src/modules/video/video.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Video]), MediaModule],

@@ -3,8 +3,8 @@ import { Repository } from 'typeorm';
 
 import { Video } from '../entites/video.entity';
 import { CreateVideoDto } from '../dto/create-video.dto';
-import { VideoMedia } from '../../../libs/media/entites/video-media.entity';
 import { IVideoRepository } from '../interfaces/video.repository.interface';
+import { VideoMedia } from 'src/libs/media/entites/video-media.entity';
 
 export class VideoRepository implements IVideoRepository {
   constructor(
@@ -22,5 +22,9 @@ export class VideoRepository implements IVideoRepository {
     video.media = createVideoRepositoryDto.media;
 
     return this.videoMediaRepository.save(video);
+  }
+
+  getVideo(videoId: string): Promise<Video | null> {
+    return this.videoMediaRepository.findOne({ where: { id: videoId } });
   }
 }

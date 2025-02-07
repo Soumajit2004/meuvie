@@ -5,12 +5,12 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { VideoMedia } from '../../../libs/media/entites/video-media.entity';
+import { VideoMedia } from 'src/libs/media/entites/video-media.entity';
 
 @Entity()
 export class Video {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;
@@ -22,7 +22,7 @@ export class Video {
   views: number;
 
   @JoinColumn()
-  @OneToOne(() => VideoMedia)
+  @OneToOne(() => VideoMedia, { eager: true })
   media: VideoMedia;
 
   @Column({ default: () => 'NOW()', type: 'datetime' })

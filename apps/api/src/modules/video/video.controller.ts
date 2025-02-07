@@ -2,27 +2,32 @@ import {
   Body,
   Controller,
   FileTypeValidator,
+  Get,
   HttpStatus,
   MaxFileSizeValidator,
+  Param,
   ParseFilePipe,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { IVideoService } from './interfaces/video.service.interface';
-import { Video } from './entites/video.entity';
-import { UploadVideoMetadataDto } from './dto/upload-video-metadata.dto';
+import { CookieGuard } from 'src/modules/auth/guards/cookie.guard';
+import { IVideoService } from 'src/modules/video/interfaces/video.service.interface';
+import { UploadVideoDto } from 'src/modules/video/dto/upload-video.dto';
+import { Video } from 'src/modules/video/entites/video.entity';
 
 @Controller('video')
+@UseGuards(CookieGuard)
 export class VideoController {
   constructor(private readonly videoService: IVideoService) {}
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('mediaFile'))
   async uploadVideo(
-    @Body() uploadVideoMetadata: UploadVideoMetadataDto,
+    @Body() uploadVideoMetadata: UploadVideoDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -40,5 +45,10 @@ export class VideoController {
       ...uploadVideoMetadata,
       file: videoFile,
     });
+  }
+
+  @Get('/:id')
+  getVideo(@Param('id') videoId: string): Promise<Video> {
+    return this.videoService.getVideo(videoId);
   }
 }
