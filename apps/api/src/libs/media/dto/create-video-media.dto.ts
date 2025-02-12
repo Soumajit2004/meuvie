@@ -2,10 +2,13 @@ import { IsString, IsUrl } from 'class-validator';
 
 export class CreateVideoMediaDto {
   @IsString()
-  id: string;
+  key: string;
 
   @IsString()
-  fileName: string;
+  originalFilename: string;
+
+  @IsString()
+  mimeType: string;
 
   @IsUrl()
   url: string;

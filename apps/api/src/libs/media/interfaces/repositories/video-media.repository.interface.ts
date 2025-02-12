@@ -5,4 +5,8 @@ export abstract class IVideoMediaRepository {
   abstract createVideoMedia(
     createVideoMediaDto: CreateVideoMediaDto,
   ): Promise<VideoMedia>;
+
+  abstract deleteVideoMedia(id: string): Promise<void>;
+
+  abstract getVideoMediaById(id: string): Promise<VideoMedia | null>;
 }

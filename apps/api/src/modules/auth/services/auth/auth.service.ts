@@ -4,7 +4,8 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+
 import { CreateUserDto } from '../../../user/dto/create-user.dto';
 import { SignInUserDto } from '../../dto/request/signin-user.dto';
 import { UserSession } from '../../user-session.entity';

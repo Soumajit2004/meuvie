@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   FileTypeValidator,
   Get,
   HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -16,8 +18,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CookieGuard } from 'src/modules/auth/guards/cookie.guard';
 import { IVideoService } from 'src/modules/video/interfaces/video.service.interface';
-import { UploadVideoDto } from 'src/modules/video/dto/upload-video.dto';
 import { Video } from 'src/modules/video/entites/video.entity';
+import { VideoMetadataDto } from 'src/modules/video/dto/video-metadata.dto';
 
 @Controller('video')
 @UseGuards(CookieGuard)
@@ -27,7 +29,7 @@ export class VideoController {
   @Post('/upload')
   @UseInterceptors(FileInterceptor('mediaFile'))
   async uploadVideo(
-    @Body() uploadVideoMetadata: UploadVideoDto,
+    @Body() uploadVideoMetadata: VideoMetadataDto,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -50,5 +52,18 @@ export class VideoController {
   @Get('/:id')
   getVideo(@Param('id') videoId: string): Promise<Video> {
     return this.videoService.getVideo(videoId);
+  }
+
+  @Patch('/:id')
+  updateVideoMetadata(
+    @Param('id') videoId: string,
+    @Body() updateVideoMetadata: Partial<VideoMetadataDto>,
+  ): Promise<Video> {
+    return this.videoService.updateVideoMetadata(videoId, updateVideoMetadata);
+  }
+
+  @Delete('/:id')
+  deleteVideo(@Param('id') videoId: string): Promise<void> {
+    return this.videoService.deleteVideo(videoId);
   }
 }

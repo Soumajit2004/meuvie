@@ -1,12 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
 export class VideoMedia {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @Column({ primary: true, unique: true })
+  key: string;
 
   @Column()
-  fileName: string;
+  originalFileName: string;
+
+  @Column()
+  mimeType: string;
 
   @Column()
   url: string;
