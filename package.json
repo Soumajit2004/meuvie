@@ -5,8 +5,12 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "nx": "20.4.0"
+  "scripts": {
+    "dev:client": "pnpm run --filter=web start",
+    "dev:server": "pnpm run --filter=api start:dev",
+    "dev": "concurrently \"pnpm run dev:client\" \"pnpm run dev:server\""
   },
-  "dependencies": {}
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
